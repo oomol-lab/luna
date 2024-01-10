@@ -1,4 +1,5 @@
 import getPreview from './getPreview'
+import Convert from 'ansi-to-html'
 import LunaObjectViewer, {
   Static as LunaStaticObjectViewer,
 } from 'luna-object-viewer'
@@ -87,6 +88,8 @@ const emptyHighlightStyle = {
   keyword: '',
   operator: '',
 }
+
+const ANSI = new Convert()
 
 export default class Log extends Emitter {
   container: HTMLElement = h('div')
@@ -318,7 +321,7 @@ export default class Log extends Emitter {
         $icon.rmAttr('class').addClass([c('icon'), c(`icon-${icon}`)])
         self.renderObjectViewer(this)
       })
-      .on('click', () => this.click())
+      .on('click', (e) => this.click(e))
   }
   private renderEl() {
     const { elements } = this
@@ -421,7 +424,7 @@ export default class Log extends Emitter {
 
     stringify(obj, options, (result: string) => cb(JSON.parse(result)))
   }
-  private click() {
+  private click(e) {
     const { type, $container, console } = this
     const { c } = console
 
@@ -439,7 +442,12 @@ export default class Log extends Emitter {
         console.toggleGroup(this)
         break
       case 'error':
-        $container.find(c('.stack')).toggleClass(c('hidden'))
+        // Do not toggle error stack if:
+        // 1. there is text selection
+        // 2. clicked on the stack trace instead of the message itself
+        if (!getSelection()?.toString() && e.origEvent.target.classList.contains(c('log-content'))) {
+          $container.find(c('.stack')).toggleClass(c('hidden'))
+        }
         break
     }
   }
@@ -623,6 +631,9 @@ export default class Log extends Emitter {
   }
   private formatCommon(args: any[]) {
     const { c } = this.console
+
+    if (isStr(args[0]) && args.length === 1) return ANSI.toHtml(args[0])
+
     const needStrSubstitution = isStr(args[0]) && args.length !== 1
     if (needStrSubstitution) args = this.substituteStr(args)
 
