@@ -25,10 +25,10 @@ import stripIndent from 'licia/stripIndent'
 import ResizeSensor from 'licia/ResizeSensor'
 import types from 'licia/types'
 import isNull from 'licia/isNull'
-import Component, { IComponentOptions } from '../share/Component'
+import Component, { IComponentOptions } from './Component'
 import raf from 'licia/raf'
 import trim from 'licia/trim'
-import { exportCjs } from '../share/util'
+import { exportCjs } from './util'
 
 const u = navigator.userAgent
 const isAndroid = u.indexOf('Android') > -1 || u.indexOf('Adr') > -1
@@ -698,7 +698,7 @@ export default class Console extends Component<IOptions> {
     let isAtBottom = false
     if (scrollHeight === offsetHeight) {
       isAtBottom = true
-    } else if (scrollTop === scrollHeight - offsetHeight) {
+    } else if (Math.abs(scrollHeight - offsetHeight - scrollTop) < 1) {
       isAtBottom = true
     }
     this.isAtBottom = isAtBottom
@@ -764,7 +764,7 @@ export default class Console extends Component<IOptions> {
 
     const { fakeEl } = this
     const fakeFrag = document.createDocumentFragment()
-    const logs = []
+    const logs: Log[] = []
     for (let i = 0; i < len; i++) {
       const log = displayLogs[i]
       const { width, height } = log
@@ -841,8 +841,4 @@ function getFrom() {
   }
 
   return ret
-}
-
-if (typeof module !== 'undefined') {
-  exportCjs(module, Console)
 }
