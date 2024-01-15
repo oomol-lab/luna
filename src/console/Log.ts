@@ -424,7 +424,7 @@ export default class Log extends Emitter {
 
     stringify(obj, options, (result: string) => cb(JSON.parse(result)))
   }
-  private click(e) {
+  private click(e: any) {
     const { type, $container, console } = this
     const { c } = console
 

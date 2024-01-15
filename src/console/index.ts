@@ -25,10 +25,9 @@ import stripIndent from 'licia/stripIndent'
 import ResizeSensor from 'licia/ResizeSensor'
 import types from 'licia/types'
 import isNull from 'licia/isNull'
-import Component, { IComponentOptions } from './Component'
+import Component, { IComponentOptions } from '../share/Component'
 import raf from 'licia/raf'
 import trim from 'licia/trim'
-import { exportCjs } from './util'
 
 const u = navigator.userAgent
 const isAndroid = u.indexOf('Android') > -1 || u.indexOf('Adr') > -1
