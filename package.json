@@ -18,10 +18,7 @@
     "build:storybook": "build-storybook -o .storybook/out",
     "genTheme": "lsla genTheme --input src/share/theme.json --output src/share/theme.scss && lsla prettier src/share/theme.scss --write"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/liriliri/luna.git"
-  },
+  "repository": "oomol-lab/luna",
   "keywords": [
     "ui"
   ],
