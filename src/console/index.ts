@@ -418,7 +418,7 @@ export default class Console extends Component<IOptions> {
 
     let log = new Log(this, options as ILogOptions)
     log.on('updateHeight', () => {
-      this.isAtBottom = false
+    //   this.isAtBottom = false
       this.renderViewport()
     })
 
