@@ -515,9 +515,14 @@ export default class Log extends Emitter {
 
     // Only linkify for simple types
     if (contain(['log', 'debug', 'warn'], type) && this.isSimple()) {
-      msg = linkify(msg, (url) => {
-        return `<a href="${url}" target="_blank">${url}</a>`
-      })
+        msg = linkify(msg, (url) => {
+            let suffix = ''
+            if (url.endsWith("'")) {
+              url = url.slice(0, -1)
+              suffix = "'"
+            }
+            return `<a href="${url}" target="_blank">${url}</a>${suffix}`
+        })
     }
     msg = this.render({ msg, type, icon, id, header, group })
 
